@@ -13,6 +13,8 @@ import java.net.URL;
 import java.nio.Buffer;
 import java.util.ArrayList;
 
+import uk.org.siri.siri.*;
+
 import javax.inject.Named;
 
 /**
