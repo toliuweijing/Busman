@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import uk.org.siri.siri.*;
 
 import javax.inject.Named;
+import javax.xml.bind.JAXBException;
 
 /**
  * Defines v1 of a helloworld API, which provides simple "greeting" methods.
@@ -59,22 +60,26 @@ public class MyGreetings {
 
 
     @ApiMethod(name = "greetings.getmta", path="hellogreeting/getmta")
-  public HelloGreeting getMTA() {
-      HelloGreeting greeting = new HelloGreeting();
-      greeting.setMessage(getMTAResponse());
-    return greeting;
+  public Siri getMTA() throws JAXBException {
+            SiriXmlSerializer serializer = new SiriXmlSerializer();
+            Siri siri = serializer.fromXml(getMTAResponse());
+         return siri;
   }
 
    private String getMTAResponse() {
-       final String urlString = "http://bustime.mta.info/api/where/routes-for-agency/MTA%20NYCT.json?key=cfb3c75b-5a43-4e66-b7f8-14e666b0c1c1";
+       final String urlString = "http://api.prod.obanyc.com/api/siri/vehicle-monitoring.xml?key=cfb3c75b-5a43-4e66-b7f8-14e666b0c1c1&LineRef=MTA%20NYCT_B9";
        try {
            URL url = new URL(urlString);
            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 
            BufferedReader in = new BufferedReader(
                    new InputStreamReader(connection.getInputStream()));
-           String inputLine = in.readLine();
-           return inputLine;
+           String buffer = "";
+           String inputLine;
+           while ((inputLine = in.readLine()) != null) {
+                buffer += inputLine;// + "\n";
+           }
+           return buffer;
        } catch (Exception e) {
            return "error";
        }
