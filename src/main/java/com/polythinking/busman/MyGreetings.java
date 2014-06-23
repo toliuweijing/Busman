@@ -1,10 +1,16 @@
 package com.polythinking.busman;
 
 import com.google.api.server.spi.config.Api;
+
 import com.google.api.server.spi.config.ApiMethod;
 import com.google.api.server.spi.response.NotFoundException;
 import com.google.appengine.api.users.User;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.nio.Buffer;
 import java.util.ArrayList;
 
 import javax.inject.Named;
@@ -13,7 +19,7 @@ import javax.inject.Named;
  * Defines v1 of a helloworld API, which provides simple "greeting" methods.
  */
 @Api(
-    name = "helloworld",
+    name = "mta",
     version = "v1",
     scopes = {Constants.EMAIL_SCOPE},
     clientIds = {Constants.WEB_CLIENT_ID, Constants.ANDROID_CLIENT_ID, Constants.IOS_CLIENT_ID, Constants.API_EXPLORER_CLIENT_ID},
@@ -26,14 +32,6 @@ public class MyGreetings {
   static {
     greetings.add(new HelloGreeting("hello world!"));
     greetings.add(new HelloGreeting("goodbye world!"));
-  }
-
-  public HelloGreeting getGreeting(@Named("id") Integer id) throws NotFoundException {
-    try {
-      return greetings.get(id);
-    } catch (IndexOutOfBoundsException e) {
-      throw new NotFoundException("Greeting not found with an index: " + id);
-    }
   }
 
   public ArrayList<HelloGreeting> listGreeting() {
@@ -56,4 +54,28 @@ public class MyGreetings {
     HelloGreeting response = new HelloGreeting("hello " + user.getEmail());
     return response;
   }
+
+
+    @ApiMethod(name = "greetings.getmta", path="hellogreeting/getmta")
+  public HelloGreeting getMTA() {
+      HelloGreeting greeting = new HelloGreeting();
+      greeting.setMessage(getMTAResponse());
+    return greeting;
+  }
+
+   private String getMTAResponse() {
+       final String urlString = "http://bustime.mta.info/api/where/routes-for-agency/MTA%20NYCT.json?key=cfb3c75b-5a43-4e66-b7f8-14e666b0c1c1";
+       try {
+           URL url = new URL(urlString);
+           HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+
+           BufferedReader in = new BufferedReader(
+                   new InputStreamReader(connection.getInputStream()));
+           String inputLine = in.readLine();
+           return inputLine;
+       } catch (Exception e) {
+           return "error";
+       }
+   }
+
 }
