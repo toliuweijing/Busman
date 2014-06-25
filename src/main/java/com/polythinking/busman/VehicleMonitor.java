@@ -3,14 +3,12 @@ package com.polythinking.busman;
 import com.google.api.server.spi.config.Api;
 
 import com.google.api.server.spi.config.ApiMethod;
-import com.google.api.server.spi.response.NotFoundException;
 import com.google.appengine.api.users.User;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.nio.Buffer;
 import java.util.ArrayList;
 
 import uk.org.siri.siri.*;
@@ -22,13 +20,13 @@ import javax.xml.bind.JAXBException;
  * Defines v1 of a helloworld API, which provides simple "greeting" methods.
  */
 @Api(
-    name = "mta",
+    name = "monitor",
     version = "v1",
     scopes = {Constants.EMAIL_SCOPE},
     clientIds = {Constants.WEB_CLIENT_ID, Constants.ANDROID_CLIENT_ID, Constants.IOS_CLIENT_ID, Constants.API_EXPLORER_CLIENT_ID},
     audiences = {Constants.ANDROID_AUDIENCE}
 )
-public class MyGreetings {
+public class VehicleMonitor {
 
   public static ArrayList<HelloGreeting> greetings = new ArrayList<HelloGreeting>();
 
@@ -61,13 +59,13 @@ public class MyGreetings {
 
     @ApiMethod(name = "greetings.getmta", path="hellogreeting/getmta")
   public Siri getMTA() throws JAXBException {
-            SiriXmlSerializer serializer = new SiriXmlSerializer();
-            Siri siri = serializer.fromXml(getMTAResponse());
-         return siri;
+    SiriXmlSerializer serializer = new SiriXmlSerializer();
+    Siri siri = serializer.fromXml(getMTAResponse());
+    return siri;
   }
 
-   private String getMTAResponse() {
-       final String urlString = "http://api.prod.obanyc.com/api/siri/vehicle-monitoring.xml?key=cfb3c75b-5a43-4e66-b7f8-14e666b0c1c1&LineRef=MTA%20NYCT_B9";
+  private String getMTAResponse() {
+      final String urlString = "http://api.prod.obanyc.com/api/siri/vehicle-monitoring.xml?key=cfb3c75b-5a43-4e66-b7f8-14e666b0c1c1&LineRef=MTA%20NYCT_B9";
        try {
            URL url = new URL(urlString);
            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
