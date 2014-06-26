@@ -50,6 +50,11 @@
         <div><input id="authedGreeting" type="submit" class="btn btn-small" disabled value="Submit"></div>
     </form>
 
+    <form action="/TaskServlet" method="post">
+        <input type="text" name="key">
+        <input type="submit">
+    </form>
+
     <script type="text/javascript">
         function init() {
             google.devrel.samples.hello.init('//' + window.location.host + '/_ah/api');
