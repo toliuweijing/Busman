@@ -1,28 +1,16 @@
 package com.polythinking.busman;
 
 import com.google.api.server.spi.config.Api;
-
 import com.google.api.server.spi.config.ApiMethod;
 import com.google.appengine.api.taskqueue.Queue;
 import com.google.appengine.api.taskqueue.QueueFactory;
 import com.google.appengine.api.taskqueue.TaskOptions;
-import com.google.appengine.api.users.User;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.Date;
-
 import uk.org.siri.*;
 import uk.org.siri.siri.*;
-import uk.org.siri.siri.Siri;
 
-import javax.inject.Named;
 import javax.xml.bind.JAXBException;
+import java.io.IOException;
+import java.util.Date;
 
 /**
  * Defines v1 of a helloworld API, which provides simple "greeting" methods.
