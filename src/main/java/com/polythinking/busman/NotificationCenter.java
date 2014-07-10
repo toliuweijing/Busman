@@ -19,10 +19,10 @@ public class NotificationCenter {
   private static final String REST_API_KEY = "wcW5946hJmOawnE9ht6x3T7G8URewXwta4PdflrA";
   private static final String PUSH_URL = "https://api.parse.com/1/push";
 
-  public void send() {
+  public void send(String msg) {
     String type = "android";
     Map<String, String> data = new HashMap<String, String>();
-    data.put("alert", "push data test");
+    data.put("alert", msg);
     String[] channels = new String[]{"testsddg"};
     try {
       sendPost(channels, type, data);

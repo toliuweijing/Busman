@@ -34,7 +34,7 @@ public class StopMonitor {
 
   @ApiMethod(name = "stopMonitor.monitorB9", httpMethod = "post")
   public Object monitorB9() throws IOException, JAXBException {
-    new NotificationCenter().send();
+    new NotificationCenter().send("JJWEN");
     return TaskServlet.mTimestamps;
   }
 }
