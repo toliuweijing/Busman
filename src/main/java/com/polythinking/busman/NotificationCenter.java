@@ -1,5 +1,6 @@
 package com.polythinking.busman;
 
+import com.google.appengine.api.urlfetch.*;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpPost;
@@ -8,6 +9,10 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
 import org.json.JSONObject;
 
+import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -41,7 +46,24 @@ public class NotificationCenter {
     }
     jo.put("data", data);
 
-    this.pushData(jo.toString());
+//    this.pushData(jo.toString());
+    this.pushDataURLFetch(jo.toString());
+  }
+
+  private void pushDataURLFetch(String postData) throws IOException {
+    URLFetchService service = URLFetchServiceFactory.getURLFetchService();
+    URL url = new URL(PUSH_URL);
+    HTTPRequest request = new HTTPRequest(url, HTTPMethod.POST);
+    request.addHeader(new HTTPHeader("X-Parse-Application-Id", APPLICATION_ID));
+    request.addHeader(new HTTPHeader("X-Parse-REST-API-Key", REST_API_KEY));
+    request.addHeader(new HTTPHeader("Content-Type", "application/json"));
+    request.setPayload(postData.getBytes());
+    HTTPResponse httpResponse = service.fetch(request);
+    if (httpResponse.getResponseCode() == HttpURLConnection.HTTP_OK) {
+      System.out.println("====OK!");
+    } else {
+      System.out.println("====bad!");
+    }
   }
 
   private void pushData(String postData) throws Exception {
