@@ -50,6 +50,12 @@
             <artifactId>jdo-api</artifactId>
             <version>3.0.1</version>
         </dependency>
+        <dependency>
+            <groupId>org.json</groupId>
+            <artifactId>json</artifactId>
+            <version>20140107</version>
+        </dependency>
+
 
         <!-- Test Dependencies -->
         <dependency>
@@ -163,6 +169,10 @@
         <repository>
               <id>public.onebusaway.org</id>
               <url>http://nexus.onebusaway.org/content/groups/public/</url>
+        </repository>
+        <repository>
+            <id>mvn.com</id>
+            <url>http://mvnrepository.com/artifact/</url>
         </repository>
     </repositories>
 

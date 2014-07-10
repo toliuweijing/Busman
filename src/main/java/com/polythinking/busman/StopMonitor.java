@@ -5,6 +5,7 @@ import com.google.api.server.spi.config.ApiMethod;
 import com.google.appengine.api.taskqueue.Queue;
 import com.google.appengine.api.taskqueue.QueueFactory;
 import com.google.appengine.api.taskqueue.TaskOptions;
+import org.mortbay.util.ajax.JSONObjectConvertor;
 import uk.org.siri.*;
 import uk.org.siri.siri.*;
 
@@ -33,13 +34,7 @@ public class StopMonitor {
 
   @ApiMethod(name = "stopMonitor.monitorB9", httpMethod = "post")
   public Object monitorB9() throws IOException, JAXBException {
-    TaskServlet.mTimestamps.add(new Date());
-    if (TaskServlet.mTimestamps.size() < 5) {
-      //schedule
-      Queue queue = QueueFactory.getDefaultQueue();
-      queue.add(TaskOptions.Builder.withUrl("/taskservlet"));
-      return new Response();
-    }
+    new NotificationCenter().send();
     return TaskServlet.mTimestamps;
   }
 }
