@@ -38,9 +38,20 @@ public class TaskServlet extends HttpServlet {
       for (StopMonitoringDeliveryStructure a : siri.getServiceDelivery().getStopMonitoringDelivery()) {
         for (MonitoredStopVisitStructure b : a.getMonitoredStopVisit()) {
           MonitoredVehicleJourneyStructure c = b.getMonitoredVehicleJourney();
-          System.out.println("====" + getLineNum(c) + " is " + getStopsFromCall(c) + " away");
+
+          String lineNume = getLineNum(c);
+          String stopName = getStopName(c);
+          int stopsFromCall = getStopsFromCall(c);
+          if (stopsFromCall < 2) {
+            new NotificationCenter().send(lineNume + " is approaching " + stopName);
+            System.out.println("!!!====" + getLineNum(c) + " is " + getStopsFromCall(c) + " away");
+            return;
+          }
+          System.out.println("<<====" + getLineNum(c) + " is " + getStopsFromCall(c) + " away");
         }
       }
+
+      runAsync();
     } catch (JAXBException e) {
       e.printStackTrace();
     }
