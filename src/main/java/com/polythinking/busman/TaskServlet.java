@@ -28,11 +28,15 @@ import static uk.org.siri.siri.VehicleActivityStructure.MonitoredVehicleJourney;
 public class TaskServlet extends HttpServlet {
 
   public static ArrayList<Date> mTimestamps = new ArrayList<Date>();
+  public static String stopCode;
 
   @Override
   protected void doPost(HttpServletRequest req, HttpServletResponse resp)
       throws ServletException, IOException {
+    new NotificationCenter().send(stopCode);
+  }
 
+  private void monitorStop(String stopCode) {
     try {
       Siri siri = new SiriFetcher().getStopMonitoringSample();
       for (StopMonitoringDeliveryStructure a : siri.getServiceDelivery().getStopMonitoringDelivery()) {

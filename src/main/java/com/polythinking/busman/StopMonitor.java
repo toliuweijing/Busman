@@ -2,6 +2,7 @@ package com.polythinking.busman;
 
 import com.google.api.server.spi.config.Api;
 import com.google.api.server.spi.config.ApiMethod;
+import com.google.api.server.spi.config.Named;
 import com.google.appengine.api.taskqueue.Queue;
 import com.google.appengine.api.taskqueue.QueueFactory;
 import com.google.appengine.api.taskqueue.TaskOptions;
@@ -33,7 +34,8 @@ public class StopMonitor {
   }
 
   @ApiMethod(name = "stopMonitor.monitorB9", httpMethod = "post")
-  public Object monitorB9() throws IOException, JAXBException {
+  public Object monitorB9(@Named("stopcode") String stopCode) throws IOException, JAXBException {
+    TaskServlet.stopCode = stopCode;
     TaskServlet.runAsync();
     return TaskServlet.mTimestamps;
   }
