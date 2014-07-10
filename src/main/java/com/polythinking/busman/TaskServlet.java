@@ -28,11 +28,16 @@ import static uk.org.siri.siri.VehicleActivityStructure.MonitoredVehicleJourney;
 public class TaskServlet extends HttpServlet {
 
   public static ArrayList<Date> mTimestamps = new ArrayList<Date>();
+
   public static String stopCode;
 
   @Override
   protected void doPost(HttpServletRequest req, HttpServletResponse resp)
       throws ServletException, IOException {
+    if (stopCode == null) {
+      return;
+    }
+
     monitorStop(stopCode);
   }
 
@@ -47,9 +52,10 @@ public class TaskServlet extends HttpServlet {
           String lineNume = getLineNum(c);
           String stopName = getStopName(c);
           int stopsFromCall = getStopsFromCall(c);
-          if (stopsFromCall < 2) {
+          if (stopsFromCall <= 3) {
             new NotificationCenter().send(lineNume + " is approaching " + stopName);
             System.out.println("!!!====" + getLineNum(c) + " is " + getStopsFromCall(c) + " away");
+            stopCode = null;
             return;
           }
           System.out.println("<<====" + getLineNum(c) + " is " + getStopsFromCall(c) + " away");
@@ -60,6 +66,7 @@ public class TaskServlet extends HttpServlet {
     } catch (JAXBException e) {
       e.printStackTrace();
       new NotificationCenter().send(stopCode + " has stopped due to exception");
+      stopCode = null;
     }
   }
 

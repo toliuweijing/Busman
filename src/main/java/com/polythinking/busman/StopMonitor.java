@@ -35,9 +35,21 @@ public class StopMonitor {
 
   @ApiMethod(name = "stopMonitor.monitorB9", httpMethod = "post")
   public Object monitorB9(@Named("stopcode") String stopCode) throws IOException, JAXBException {
-    new NotificationCenter().send(stopCode + " request is accepted");
-    TaskServlet.stopCode = stopCode;
-    TaskServlet.runAsync();
+    if (stopCode.equals("-1")) {
+      TaskServlet.stopCode = null;
+      new NotificationCenter().send("request is stopped");
+    } else {
+      new NotificationCenter().send(stopCode + " request is accepted");
+      if (TaskServlet.stopCode == null) {
+        new NotificationCenter().send("server starts running");
+        TaskServlet.stopCode = stopCode;
+      } else {
+        new NotificationCenter().send("server switch:" + TaskServlet.stopCode + " to " + stopCode);
+        TaskServlet.stopCode = stopCode;
+      }
+      TaskServlet.runAsync();
+    }
+
     return TaskServlet.mTimestamps;
   }
 }
