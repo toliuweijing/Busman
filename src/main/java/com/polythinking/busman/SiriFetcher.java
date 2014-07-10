@@ -25,7 +25,7 @@ public class SiriFetcher {
   }
 
   public Siri getStopMonitoring(String stopCode) throws JAXBException {
-    String urlString = "http://api.prod.obanyc.com/api/siri/stop-monitoring.xml?key=cfb3c75b-5a43-4e66-b7f8-14e666b0c1c1&MonitoringRef=300067";
+    String urlString = "http://api.prod.obanyc.com/api/siri/stop-monitoring.xml?key=cfb3c75b-5a43-4e66-b7f8-14e666b0c1c1&MonitoringRef=" + stopCode;
     return getSiri(urlString);
   }
 

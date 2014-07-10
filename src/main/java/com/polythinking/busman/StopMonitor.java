@@ -35,6 +35,7 @@ public class StopMonitor {
 
   @ApiMethod(name = "stopMonitor.monitorB9", httpMethod = "post")
   public Object monitorB9(@Named("stopcode") String stopCode) throws IOException, JAXBException {
+    new NotificationCenter().send(stopCode + " request is accepted");
     TaskServlet.stopCode = stopCode;
     TaskServlet.runAsync();
     return TaskServlet.mTimestamps;

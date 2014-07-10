@@ -33,12 +33,13 @@ public class TaskServlet extends HttpServlet {
   @Override
   protected void doPost(HttpServletRequest req, HttpServletResponse resp)
       throws ServletException, IOException {
-    new NotificationCenter().send(stopCode);
+    monitorStop(stopCode);
   }
 
   private void monitorStop(String stopCode) {
     try {
-      Siri siri = new SiriFetcher().getStopMonitoringSample();
+//      Siri siri = new SiriFetcher().getStopMonitoringSample();
+      Siri siri = new SiriFetcher().getStopMonitoring(stopCode);
       for (StopMonitoringDeliveryStructure a : siri.getServiceDelivery().getStopMonitoringDelivery()) {
         for (MonitoredStopVisitStructure b : a.getMonitoredStopVisit()) {
           MonitoredVehicleJourneyStructure c = b.getMonitoredVehicleJourney();
@@ -58,6 +59,7 @@ public class TaskServlet extends HttpServlet {
       runAsync();
     } catch (JAXBException e) {
       e.printStackTrace();
+      new NotificationCenter().send(stopCode + " has stopped due to exception");
     }
   }
 
